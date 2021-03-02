@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Display Test</title>
+        <link rel="icon" href="https://static1.squarespace.com/static/5a822acff09ca44ad247aaea/t/5a92bb4fe4966bf0584027ba/favicon.ico">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.18.10/slimselect.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+    </head>
+
+    <body>
+
+      <style>
+        .sportsinfo{
+          display: grid;
+          grid-template-columns: repeat(12, 1fr);
+          grid-auto-rows: auto;
+          text-align: center;
+        }
+
+        .logos{
+          display: block;
+          margin: auto;
+          grid-column: span 5;
+        }
+
+        .teams{
+          grid-column: span 5;
+        }
+
+        .homeAway{
+          grid-column: span 2;
+        }
+      </style>
+
+      <div class="sportsinfo">
+        <div class="logos"><img id="umLogo" src="data:," width="150" alt></div>
+        <div class="homeAway"></div>
+        <div class="logos"><img id="opponentLogo" src="data:," width="150" alt></div>
+        <div class="teams"><p id="umScoreDisplay" class="teams"></p></div>
+        <div class="homeAway"><p id="homeDisplay"></p></div>
+        <div class="teams"><p id="opponentScoreDisplay" class="teams"></p></div>
+      </div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase-database.js"></script>
+    <script type="text/javascript" src="js/firebasesportsdisplay.js"></script>
+      
+
+    </body>
+</html>
