@@ -1,7 +1,7 @@
-$(document).ready(function(){
+$(document).ready(function () {
 
-// Initialize Firebase
-var config = {
+  // Initialize Firebase
+  var config = {
     apiKey: "AIzaSyBBRbDBUBO_eDzpnMKgf8JtK1S1_76zlmw",
     authDomain: "wvum-real-time-sports.firebaseapp.com",
     databaseURL: "https://wvum-real-time-sports.firebaseio.com",
@@ -9,70 +9,78 @@ var config = {
     storageBucket: "",
     messagingSenderId: "560038150781"
   };
-firebase.initializeApp(config);
+  firebase.initializeApp(config);
 
-var dbActive = firebase.database().ref('active');
+  var dbActive = firebase.database().ref('active');
 
-// Show active game info on page
-dbActive.once('value').then(function(snapshot){
-  currentOpponent = snapshot.child("team").val();
-  umScore = snapshot.child("umScore").val();
-  opponentScore = snapshot.child("opponentScore").val();
-  isHome = snapshot.child("home").val();
-  isActive = snapshot.child("isActive").val();
-  logoCode = snapshot.child("code").val();
-
-  if (isActive == true){
-    if (isHome == "true"){
-      $("#homeDisplay").html("vs");  
-    } else {
-      $("#homeDisplay").html("@");
-    }
-
-    $(".sportsinfo").show();
-    $("#umLogo").attr("src", "https://a.espncdn.com/i/teamlogos/ncaa/500/2390.png");
-    $("#umScoreDisplay").html("UM" + "<br>" + umScore);
-    $("#opponentLogo").attr("src", "https://a.espncdn.com/i/teamlogos/ncaa/500/" + logoCode + ".png");
-    $("#opponentScoreDisplay").html(currentOpponent + "<br>" + opponentScore);
+  // Function to write ordinal number suffixes
+  function periodOrdinal(period) {
+    var s = ["th", "st", "nd", "rd"],
+      v = period % 100;
+    $("#periodNumber").html(period + (s[(v - 20) % 10] || s[v] || s[0]) + " ");
   }
-})
 
-// ------ Events when active game values change ------
-dbActive.on('value', (snapshot) => {
 
-  const isActive = snapshot.child("isActive").val();
-  const currentOpponentActive = snapshot.child("team").val();
-  const umScoreActive = snapshot.child("umScore").val();
-  const opponentScoreActive = snapshot.child("opponentScore").val();
-  const logoCodeActive = snapshot.child("code").val();
-  const isHomeActive = snapshot.child("home").val();
-  
-  if (isActive == true){
-    
-    if (isHomeActive == "true"){
-      $("#homeDisplay").html("vs");  
-    } else {
-      $("#homeDisplay").html("@");
+  // Function to change period type
+  function changePeriodType(sport) {
+    if (sport == "Football") {
+      $("#periodType").html("quarter");
+    } else if ((sport == "Men's Basketball") || (sport == "Women's Basketball") || (sport == "Men's Soccer") || (sport == "Women's Soccer")) {
+      $("#periodType").html("half");
+    } else if (sport == "Baseball") {
+      $("#periodType").html("inning");
+    } else if (sport == "Volleyball") {
+      $("#periodType").html("set");
     }
-    
-    $(".sportsinfo").show();
-    $("#umScoreDisplay").html("UM" + "<br>" + umScoreActive);
-    $("#opponentScoreDisplay").html(currentOpponentActive + "<br>" + opponentScoreActive);
-    $("#umLogo").attr("src", "https://a.espncdn.com/i/teamlogos/ncaa/500/2390.png");
-    $("#opponentLogo").attr("src", "https://a.espncdn.com/i/teamlogos/ncaa/500/" + logoCodeActive + ".png");
-
-  } else {
-    $(".sportsinfo").hide();
-    /*
-    $("#umScoreDisplay").html("");
-    $("#homeDisplay").html("");
-    $("#opponentScoreDisplay").html("");
-    $("#umLogo").attr("src", "data:,");
-    $("#opponentLogo").attr("src", "data:,");
-    */
   }
-})
 
-// --------------------------------------------------
+
+  // Function to show active game info
+  function showGame(snapshot) {
+    isActive = snapshot.child("isActive").val();
+    currentOpponent = snapshot.child("team").val();
+    umScore = snapshot.child("umScore").val();
+    opponentScore = snapshot.child("opponentScore").val();
+    logoCode = snapshot.child("code").val();
+    isHome = snapshot.child("home").val();
+    period = snapshot.child("period").val();
+    sport = snapshot.child("sport").val();
+
+    if (isActive == true) {
+      if (isHome == "true") {
+        $("#homeDisplay").html("vs");
+      } else {
+        $("#homeDisplay").html("@");
+      }
+
+      $(".sportsinfo").show();
+      $("#umLogo").attr("src", "https://a.espncdn.com/i/teamlogos/ncaa/500/2390.png");
+      $("#umScoreDisplay").html("UM" + "<br>" + umScore);
+      $("#opponentLogo").attr("src", "https://a.espncdn.com/i/teamlogos/ncaa/500/" + logoCode + ".png");
+      $("#opponentScoreDisplay").html(currentOpponent + "<br>" + opponentScore);
+
+      if (period) {
+        periodOrdinal(period);
+        changePeriodType(sport);
+      } else {
+        $("#periodNumber, #periodType").html("")
+      }
+
+    } else {
+      $(".sportsinfo").hide();
+    }
+  }
+
+
+  // Show active game info on page load
+  dbActive.once('value').then(function (snapshot) {
+    showGame(snapshot);
+  })
+
+
+  // Show active game info on value change
+  dbActive.on('value', (snapshot) => {
+    showGame(snapshot);
+  })
 
 })

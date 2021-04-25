@@ -23,6 +23,49 @@ $(document).ready(function () {
   var dbActive = firebase.database().ref('active');
 
 
+  // Function to change score buttons based on sport
+  function changeInputSection(sportActive) {
+    if (sportActive == "Football") {
+      $(".addHome, .addOpponent").hide();
+      $(".jsFootball").show();
+      $(".jsButtonGrids").addClass("buttonGrid1");
+      $(".jsButtonGrids").removeClass("buttonGrid2 buttonGrid3");
+    } else if ((sportActive == "Men's Basketball") || (sportActive == "Women's Basketball")) {
+      $(".addHome, .addOpponent").hide();
+      $(".jsBasketball").show();
+      $(".jsButtonGrids").addClass("buttonGrid2");
+      $(".jsButtonGrids").removeClass("buttonGrid1 buttonGrid3");
+    } else {
+      $(".addHome, .addOpponent").hide();
+      $(".jsOtherSports").show();
+      $(".jsButtonGrids").addClass("buttonGrid3");
+      $(".jsButtonGrids").removeClass("buttonGrid1 buttonGrid2");
+    }
+
+    // Set period type
+    if (sportActive == "Football") {
+      $("#periodType").html("Quarter");
+    } else if ((sportActive == "Men's Basketball") || (sportActive == "Women's Basketball") || (sportActive == "Men's Soccer") || (sportActive == "Women's Soccer")) {
+      $("#periodType").html("Half");
+    } else if (sportActive == "Baseball") {
+      $("#periodType").html("Inning");
+    } else if (sportActive == "Volleyball") {
+      $("#periodType").html("Set");
+    }
+
+  }
+
+
+  // Function to write active game info
+  function displayActiveInfo(isHome, currentOpponent, sportActive) {
+    if (isHome == "true") {
+      $("#activeGame").html("UM vs " + currentOpponent + "<br><p>" + sportActive + "</p>");
+    } else {
+      $("#activeGame").html("UM @ " + currentOpponent + "<br><p>" + sportActive + "</p>");
+    }
+  }
+
+
   // Append teams to dropdown
   dbTeams.once('value').then(function (snapshot) {
     snapshot.forEach(function (childSnapshot) {
@@ -53,7 +96,7 @@ $(document).ready(function () {
   });
 
 
-  // Show active game and score section on page
+  // Show active game and score section on page load
   dbActive.once('value').then(function (snapshot) {
     var currentOpponent = snapshot.child("team").val();
     var isActive = snapshot.child("isActive").val();
@@ -61,44 +104,11 @@ $(document).ready(function () {
     var sportActive = snapshot.child("sport").val();
 
     if (isActive == true) {
-      if (isHome == "true") {
-        $("#activeGame").html("UM vs " + currentOpponent);
-      } else {
-        $("#activeGame").html("UM @ " + currentOpponent);
-      }
-
-      // Change score buttons based on sport
-      if (sportActive == "Football") {
-        $(".addHome, .addOpponent").hide();
-        $(".jsFootball").show();
-        $(".jsButtonGrids").addClass("buttonGrid1");
-        $(".jsButtonGrids").removeClass("buttonGrid2 buttonGrid3");
-        $("#periodType").html("Quarter");
-      } else if ((sportActive == "Men's Basketball") || (sportActive == "Women's Basketball")) {
-        $(".addHome, .addOpponent").hide();
-        $(".jsBasketball").show();
-        $(".jsButtonGrids").addClass("buttonGrid2");
-        $(".jsButtonGrids").removeClass("buttonGrid1 buttonGrid3");
-        $("#periodType").html("Half");
-      } else {
-        $(".addHome, .addOpponent").hide();
-        $(".jsOtherSports").show();
-        $(".jsButtonGrids").addClass("buttonGrid3");
-        $(".jsButtonGrids").removeClass("buttonGrid1 buttonGrid2");
-      }
-
-      // Additional conditions to set period type
-      if (sportActive == "Baseball") {
-        $("#periodType").html("Inning");
-      } else if (sportActive == "Volleyball") {
-        $("#periodType").html("Set");
-      }
-      if ((sportActive == "Men's Soccer") || (sportActive == "Women's Soccer")) {
-        $("#periodType").html("Half");
-      }
+      displayActiveInfo(isHome, currentOpponent, sportActive);
+      changeInputSection(sportActive);
 
     } else {
-      $("#activeGame").html("No active game" + "#scoreSection");
+      $("#activeGame").html("No active game");
       $("#periodSection, #scoreSection").hide();
     }
   })
@@ -119,17 +129,8 @@ $(document).ready(function () {
         var sportActive = snapshot.child("sport").val();
         var logoCode = snapshot.child("code").val();
 
-        // Set active game message
-        if (isHome == "true") {
-          $("#activeGame").html("UM vs " + currentOpponent);
-        } else {
-          $("#activeGame").html("UM @ " + currentOpponent);
-        }
-
-
-
-
-
+        displayActiveInfo(isHome, currentOpponent, sportActive);
+        changeInputSection(sportActive);
 
         // Set active game values
         dbActive.set({
@@ -185,6 +186,7 @@ $(document).ready(function () {
     })
   });
 
+
   // Update active game scores with buttons
   $(".addHome").click(function () {
     var scoreChange = parseInt(this.value);
@@ -209,15 +211,15 @@ $(document).ready(function () {
   dbActive.on('value', (snapshot) => {
 
     // Populate inputs with current scores
-    const umScoreActive = snapshot.child("umScore").val();
-    const opponentScoreActive = snapshot.child("opponentScore").val();
+    var umScoreActive = snapshot.child("umScore").val();
+    var opponentScoreActive = snapshot.child("opponentScore").val();
 
     $("#umScoreInput").val(umScoreActive);
     $("#opponentScoreInput").val(opponentScoreActive);
 
     // Update active game score in "games" branch
-    const currentOpponentActive = snapshot.child("team").val();
-    const isActive = snapshot.child("isActive").val();
+    var currentOpponentActive = snapshot.child("team").val();
+    var isActive = snapshot.child("isActive").val();
 
     if (isActive == true) {
       var gamesUpdate = firebase.database().ref('games/' + currentOpponentActive);

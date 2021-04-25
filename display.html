@@ -34,6 +34,11 @@
         .homeAway{
           grid-column: span 2;
         }
+
+        #periodDisplay {
+          text-align: center;
+          grid-column: span 12;
+        }
       </style>
 
       <div class="sportsinfo">
@@ -43,6 +48,7 @@
         <div class="teams"><p id="umScoreDisplay" class="teams"></p></div>
         <div class="homeAway"><p id="homeDisplay"></p></div>
         <div class="teams"><p id="opponentScoreDisplay" class="teams"></p></div>
+        <div id="periodDisplay"><span id="periodNumber"></span><span id="periodType"></span></div>
       </div>
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
