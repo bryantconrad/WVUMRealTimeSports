@@ -35,12 +35,6 @@ $(document).ready(function () {
   }
 
 
-  // Function to display overtime
-  function changePeriodTypeOT(isOvertime) {
-    $("#periodType").html("overtime");
-  }
-
-
   // Function to show active game info
   function showGame(snapshot) {
     isActive = snapshot.child("isActive").val();
@@ -62,7 +56,7 @@ $(document).ready(function () {
 
       $(".sportsinfo").show();
       $("#umLogo").attr("src", "https://a.espncdn.com/i/teamlogos/ncaa/500/2390.png");
-      $("#umScoreDisplay").html("UM" + "<br>" + umScore);
+      $("#umScoreDisplay").html("Miami" + "<br>" + umScore);
       $("#opponentLogo").attr("src", "https://a.espncdn.com/i/teamlogos/ncaa/500/" + logoCode + ".png");
       $("#opponentScoreDisplay").html(currentOpponent + "<br>" + opponentScore);
 
