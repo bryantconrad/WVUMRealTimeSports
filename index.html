@@ -1,139 +1,146 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Sportscasting</title>
-        <link rel="icon" href="https://static1.squarespace.com/static/5a822acff09ca44ad247aaea/t/5a92bb4fe4966bf0584027ba/favicon.ico">
-        <link rel="stylesheet" type="text/css" href="css/style.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.18.10/slimselect.min.css">
-        <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
-    </head>
 
-    <body>
-      <header id="header">
-        <a href="https://www.wvum.org/" target="blank"><img id="logo" src="images/logo.png"></a>
-        <p id="playing">who's playing?</p>
-      </header>
-      
-      <div id="periodSection">
-        <h2 class="sectionh2">Update Period</h2>
-        <div class="gameInputDiv">
-          <div class="gameInputText">
-            <label for="periodInput" id="periodType">Period</label>
-            <input id="periodInput" class="gameInput" type="number" value="0">
-          </div>
+<head>
+  <meta charset="UTF-8">
+  <title>Sportscasting</title>
+  <link rel="icon"
+    href="https://static1.squarespace.com/static/5a822acff09ca44ad247aaea/t/5a92bb4fe4966bf0584027ba/favicon.ico">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.18.10/slimselect.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+</head>
+
+<body>
+  <header id="header">
+    <a href="https://www.wvum.org/" target="blank"><img id="logo" src="images/logo.png"></a>
+    <p id="playing">who's playing?</p>
+  </header>
+
+  <div id="periodSection">
+    <h2 class="sectionh2">Update Period</h2>
+    <div class="gameInputDiv">
+      <div class="gameInputText">
+        <label for="periodInput" id="periodType">Period</label>
+        <input id="periodInput" class="gameInput" type="number" value="0">
+        <div>
+          <input id="overtime" type="checkbox">
+          <label for="overtime">Overtime</label>
         </div>
       </div>
+    </div>
+  </div>
 
-      <div id="scoreSection">
-        <h2 class="sectionh2">Update Score</h2>
-        <div class="gameInputDiv">
-          <div class="gameInputText">
-            <label for="umScoreInput">UM Score</label>
-            <input id="umScoreInput" class="gameInput" type="number">
-          </div>
-          <div class="gameInputText">
-            <label for="opponentScoreInput">Opponent Score</label>
-            <input id="opponentScoreInput" class="gameInput" type="number">
-          </div>
-        </div>
-
-
-      <div class="buttonGridContainer gameInputDiv">
-        <div class="jsButtonGrids">
-          <button type="button" value="1" class="addHome jsFootball jsBasketball jsOtherSports">+1</button>
-          <button type="button" value="2" class="addHome jsFootball jsBasketball">+2</button>
-          <button type="button" value="3" class="addHome jsFootball jsBasketball">+3</button>
-          <button type="button" value="6" class="addHome jsFootball">+6</button>
-
-          <button type="button" value="-1" class="addHome subtract jsFootball jsBasketball jsOtherSports">-1</button>
-          <button type="button" value="-2" class="addHome subtract jsFootball jsBasketball">-2</button>
-          <button type="button" value="-3" class="addHome subtract jsFootball jsBasketball">-3</button>
-          <button type="button" value="-6" class="addHome subtract jsFootball">-6</button>
-        </div>
-
-        <div class="jsButtonGrids">
-          <button type="button" value="1" class="addOpponent jsFootball jsBasketball jsOtherSports">+1</button>
-          <button type="button" value="2" class="addOpponent jsFootball jsBasketball">+2</button>
-          <button type="button" value="3" class="addOpponent jsFootball jsBasketball">+3</button>
-          <button type="button" value="6" class="addOpponent jsFootball">+6</button>
-
-          <button type="button" value="-1" class="addOpponent subtract jsFootball jsBasketball jsOtherSports">-1</button>
-          <button type="button" value="-2" class="addOpponent subtract jsFootball jsBasketball">-2</button>
-          <button type="button" value="-3" class="addOpponent subtract jsFootball jsBasketball">-3</button>
-          <button type="button" value="-6" class="addOpponent subtract jsFootball">-6</button>
-        </div>
-
+  <div id="scoreSection">
+    <h2 class="sectionh2">Update Score</h2>
+    <div class="gameInputDiv">
+      <div class="gameInputText">
+        <label for="umScoreInput">UM Score</label>
+        <input id="umScoreInput" class="gameInput" type="number">
+      </div>
+      <div class="gameInputText">
+        <label for="opponentScoreInput">Opponent Score</label>
+        <input id="opponentScoreInput" class="gameInput" type="number">
       </div>
     </div>
 
 
-      <hr>
+    <div class="buttonGridContainer gameInputDiv">
+      <div class="jsButtonGrids">
+        <button type="button" value="1" class="addHome jsFootball jsBasketball jsOtherSports">+1</button>
+        <button type="button" value="2" class="addHome jsFootball jsBasketball">+2</button>
+        <button type="button" value="3" class="addHome jsFootball jsBasketball">+3</button>
+        <button type="button" value="6" class="addHome jsFootball">+6</button>
 
-        <h2 id="label" class="sectionh2">active game:</h2> 
-        <h2 id="activeGame">loading...</h2>
-        
-        <div id="chooseActive">
-            <select id="single">
-                <option data-placeholder="true"></option>
-            </select>
-          </div>
-
-          <button class="submit" id="submit1" type="button">set active game</button>
-          <button class="submit" id="clear" type="button">clear active game</button>
-          <button class="submit" id="delete" type="button">delete from list</button>
-        
-
-      <hr>
-      <h2 class="sectionh2">Add a game</h2>
-      <div class="gameInputDiv">
-        <div class="gameInputText">
-          <label for="teamInput">Opponent</label>
-          <input id="teamInput" class="gameInput" type="text" placeholder="FSU">
-        </div>
-        <div class="gameInputText">
-          <label for="dateInput">Date</label>
-          <input id="dateInput" class="gameInput" type="datetime-local" placeholder="Pick a date and time">
-        </div>
-        <div class="gameInputText">
-          <label for="sportInput">Sport</label>
-          <select name="sportInput" id="sportInput" class="gameInput">
-            <option value="Football">Football</option>
-            <option value="Baseball">Baseball</option>
-            <option value="Men's Basketball">Men's Basketball</option>
-            <option value="Women's Basketball">Women's Basketball</option>
-            <option value="Men's Soccer">Men's Soccer</option>
-            <option value="Women's Soccer">Women's Soccer</option>
-            <option value="Volleyball">Volleyball</option>
-          </select>
-          <!--<input id="sportInput" class="gameInput" type="text" placeholder="football">-->
-        </div>
-        <div class="radioInputDiv">
-          <p>Home or Away</p>
-          <input type="radio" class="radioInput" id="home" name="location" value="true">
-          <label for="home">home</label><br>
-          <input type="radio" class="radioInput" id="away" name="location" value="false">
-          <label for="away">away</label>
-        </div>
-        <div class="gameInputText">
-          <label for="codeInput">Team Code</label>
-          <input id="codeInput" class="gameInput" type="text" placeholder="2390">
-        </div>
+        <button type="button" value="-1" class="addHome subtract jsFootball jsBasketball jsOtherSports">-1</button>
+        <button type="button" value="-2" class="addHome subtract jsFootball jsBasketball">-2</button>
+        <button type="button" value="-3" class="addHome subtract jsFootball jsBasketball">-3</button>
+        <button type="button" value="-6" class="addHome subtract jsFootball">-6</button>
       </div>
 
-      <button class="submit" id="submit2" type="button">add game</button>
+      <div class="jsButtonGrids">
+        <button type="button" value="1" class="addOpponent jsFootball jsBasketball jsOtherSports">+1</button>
+        <button type="button" value="2" class="addOpponent jsFootball jsBasketball">+2</button>
+        <button type="button" value="3" class="addOpponent jsFootball jsBasketball">+3</button>
+        <button type="button" value="6" class="addOpponent jsFootball">+6</button>
+
+        <button type="button" value="-1" class="addOpponent subtract jsFootball jsBasketball jsOtherSports">-1</button>
+        <button type="button" value="-2" class="addOpponent subtract jsFootball jsBasketball">-2</button>
+        <button type="button" value="-3" class="addOpponent subtract jsFootball jsBasketball">-3</button>
+        <button type="button" value="-6" class="addOpponent subtract jsFootball">-6</button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <hr>
+
+  <h2 id="label" class="sectionh2">active game:</h2>
+  <h2 id="activeGame">loading...</h2>
+
+  <div id="chooseActive">
+    <select id="single">
+      <option data-placeholder="true"></option>
+    </select>
+  </div>
+
+  <button class="submit" id="submit1" type="button">set active game</button>
+  <button class="submit" id="clear" type="button">clear active game</button>
+  <button class="submit" id="delete" type="button">delete from list</button>
+
+
+  <hr>
+  <h2 class="sectionh2">Add a game</h2>
+  <div class="gameInputDiv">
+    <div class="gameInputText">
+      <label for="teamInput">Opponent</label>
+      <input id="teamInput" class="gameInput" type="text" placeholder="FSU">
+    </div>
+    <div class="gameInputText">
+      <label for="dateInput">Date</label>
+      <input id="dateInput" class="gameInput" type="datetime-local" placeholder="Pick a date and time">
+    </div>
+    <div class="gameInputText">
+      <label for="sportInput">Sport</label>
+      <select name="sportInput" id="sportInput" class="gameInput">
+        <option value="Football">Football</option>
+        <option value="Baseball">Baseball</option>
+        <option value="Men's Basketball">Men's Basketball</option>
+        <option value="Women's Basketball">Women's Basketball</option>
+        <option value="Men's Soccer">Men's Soccer</option>
+        <option value="Women's Soccer">Women's Soccer</option>
+        <option value="Volleyball">Volleyball</option>
+      </select>
+      <!--<input id="sportInput" class="gameInput" type="text" placeholder="football">-->
+    </div>
+    <div class="radioInputDiv">
+      <p>Home or Away</p>
+      <input type="radio" class="radioInput" id="home" name="location" value="true">
+      <label for="home">home</label><br>
+      <input type="radio" class="radioInput" id="away" name="location" value="false">
+      <label for="away">away</label>
+    </div>
+    <div class="gameInputText">
+      <label for="codeInput">Team Code</label>
+      <input id="codeInput" class="gameInput" type="text" placeholder="2390">
+    </div>
+  </div>
+
+  <button class="submit" id="submit2" type="button">add game</button>
 
 
 
-      <hr>
+  <hr>
 
- 
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.18.10/slimselect.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase-database.js"></script>
-    <script type="text/javascript" src="js/firebasesportscast.js"></script>
-      
 
-    </body>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.18.10/slimselect.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase-database.js"></script>
+  <script type="text/javascript" src="js/firebasesportscast.js"></script>
+
+
+</body>
+
 </html>

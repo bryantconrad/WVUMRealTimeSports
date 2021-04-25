@@ -24,7 +24,7 @@ $(document).ready(function () {
 
 
   // Function to change score buttons based on sport
-  function changeInputSection(sportActive) {
+  function changeInputSection(sportActive, isOvertime) {
     if (sportActive == "Football") {
       $(".addHome, .addOpponent").hide();
       $(".jsFootball").show();
@@ -43,16 +43,20 @@ $(document).ready(function () {
     }
 
     // Set period type
-    if (sportActive == "Football") {
-      $("#periodType").html("Quarter");
-    } else if ((sportActive == "Men's Basketball") || (sportActive == "Women's Basketball") || (sportActive == "Men's Soccer") || (sportActive == "Women's Soccer")) {
-      $("#periodType").html("Half");
-    } else if (sportActive == "Baseball") {
-      $("#periodType").html("Inning");
-    } else if (sportActive == "Volleyball") {
-      $("#periodType").html("Set");
+    if (isOvertime == true) {
+      $("#overtime").attr("checked", "checked");
+      $("#periodType").html("Overtime")
+    } else {
+      if (sportActive == "Football") {
+        $("#periodType").html("Quarter");
+      } else if ((sportActive == "Men's Basketball") || (sportActive == "Women's Basketball") || (sportActive == "Men's Soccer") || (sportActive == "Women's Soccer")) {
+        $("#periodType").html("Half");
+      } else if (sportActive == "Baseball") {
+        $("#periodType").html("Inning");
+      } else if (sportActive == "Volleyball") {
+        $("#periodType").html("Set");
+      }
     }
-
   }
 
 
@@ -102,10 +106,12 @@ $(document).ready(function () {
     var isActive = snapshot.child("isActive").val();
     var isHome = snapshot.child("home").val();
     var sportActive = snapshot.child("sport").val();
+    var periodActive = snapshot.child("period").val();
+    var isOvertime = snapshot.child("overtime").val();
 
     if (isActive == true) {
       displayActiveInfo(isHome, currentOpponent, sportActive);
-      changeInputSection(sportActive);
+      changeInputSection(sportActive, isOvertime);
 
     } else {
       $("#activeGame").html("No active game");
@@ -179,11 +185,27 @@ $(document).ready(function () {
     })
   });
 
+
+  // Period section
   $("#periodInput").on('input', function () {
     var periodUpdate = parseInt($("#periodInput").val());
     dbActive.update({
       period: periodUpdate
     })
+  });
+
+  $("#overtime").change(function () {
+    if (this.checked) {
+      dbActive.update({
+        period: 1,
+        overtime: true
+      })
+    } else {
+      dbActive.update({
+        overtime: false
+      })
+      $("#periodType").html("Refresh to see correct period type again");
+    }
   });
 
 
@@ -210,12 +232,15 @@ $(document).ready(function () {
   // ------ Events when active game values change ------
   dbActive.on('value', (snapshot) => {
 
-    // Populate inputs with current scores
+    // Populate inputs with current values
     var umScoreActive = snapshot.child("umScore").val();
     var opponentScoreActive = snapshot.child("opponentScore").val();
+    var periodActive = snapshot.child("period").val();
+    var isOvertime = snapshot.child("overtime").val();
 
     $("#umScoreInput").val(umScoreActive);
     $("#opponentScoreInput").val(opponentScoreActive);
+    $("#periodInput").val(periodActive);
 
     // Update active game score in "games" branch
     var currentOpponentActive = snapshot.child("team").val();
@@ -229,6 +254,10 @@ $(document).ready(function () {
       })
 
       $("#periodSection, #scoreSection").show();
+
+      if (isOvertime == true) {
+        $("#periodType").html("Overtime");
+      }
 
     } else {
       $("#periodSection, #scoreSection").hide();

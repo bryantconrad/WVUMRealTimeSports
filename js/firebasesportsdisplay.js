@@ -35,6 +35,12 @@ $(document).ready(function () {
   }
 
 
+  // Function to display overtime
+  function changePeriodTypeOT(isOvertime) {
+    $("#periodType").html("overtime");
+  }
+
+
   // Function to show active game info
   function showGame(snapshot) {
     isActive = snapshot.child("isActive").val();
@@ -45,6 +51,7 @@ $(document).ready(function () {
     isHome = snapshot.child("home").val();
     period = snapshot.child("period").val();
     sport = snapshot.child("sport").val();
+    isOvertime = snapshot.child("overtime").val();
 
     if (isActive == true) {
       if (isHome == "true") {
@@ -59,11 +66,16 @@ $(document).ready(function () {
       $("#opponentLogo").attr("src", "https://a.espncdn.com/i/teamlogos/ncaa/500/" + logoCode + ".png");
       $("#opponentScoreDisplay").html(currentOpponent + "<br>" + opponentScore);
 
-      if (period) {
+      if (isOvertime) {
+        $("#periodType").html("overtime");
         periodOrdinal(period);
-        changePeriodType(sport);
       } else {
-        $("#periodNumber, #periodType").html("")
+        if (period) {
+          periodOrdinal(period);
+          changePeriodType(sport);
+        } else {
+          $("#periodNumber, #periodType").html("")
+        }
       }
 
     } else {
