@@ -57,16 +57,16 @@ $(document).ready(function () {
 
 
     // Set period type
-    if (isFinal == true && isOvertime == true) {
+    if (isFinal && isOvertime) {
       $("#periodType").html("Final in Overtime");
       $("#final").attr("checked", "checked");
       $("#overtime").attr("checked", "checked");
 
-    } else if (isFinal == true) {
+    } else if (isFinal) {
       $("#final").attr("checked", "checked");
       $("#periodType").html("Final")
 
-    } else if (isOvertime == true) {
+    } else if (isOvertime) {
       $("#overtime").attr("checked", "checked");
       $("#periodType").html("Overtime")
 
@@ -86,6 +86,7 @@ $(document).ready(function () {
 
   // Function to write active game info
   function displayActiveInfo(isHome, currentOpponent, sportActive) {
+    // isHome returns as a string, not a bool, from Firebase (you are encouraged to fix it if this bothers you)
     if (isHome == "true") {
       $("#activeGame").html("UM vs " + currentOpponent + "<br><p>" + sportActive + "</p>");
     } else {
@@ -135,7 +136,7 @@ $(document).ready(function () {
     var isFinal = snapshot.child("final").val();
     var inning = snapshot.child("inning").val();
 
-    if (isActive == true) {
+    if (isActive) {
       displayActiveInfo(isHome, currentOpponent, sportActive);
       changeInputSection(sportActive, isOvertime, isFinal, inning);
 
@@ -301,7 +302,7 @@ $(document).ready(function () {
     var currentOpponentActive = snapshot.child("team").val();
     var isActive = snapshot.child("isActive").val();
 
-    if (isActive == true) {
+    if (isActive) {
       var gamesUpdate = firebase.database().ref('games/' + currentOpponentActive);
       gamesUpdate.update({
         umScore: umScoreActive,
@@ -311,11 +312,11 @@ $(document).ready(function () {
       // Show period/game update sections
       $("#periodSection, #scoreSection").show();
 
-      if (isFinal == true && isOvertime == true) {
+      if (isFinal && isOvertime) {
         $("#periodType").html("Final in Overtime");
-      } else if (isFinal == true) {
+      } else if (isFinal) {
         $("#periodType").html("Final");
-      } else if (isOvertime == true) {
+      } else if (isOvertime) {
         $("#periodType").html("Overtime");
       }
 

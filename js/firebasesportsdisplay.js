@@ -46,6 +46,8 @@ $(document).ready(function () {
     period = snapshot.child("period").val();
     sport = snapshot.child("sport").val();
     isOvertime = snapshot.child("overtime").val();
+    isFinal = snapshot.child("final").val();
+    inning = snapshot.child("inning").val();
 
     if (isActive == true) {
       if (isHome == "true") {
@@ -60,9 +62,29 @@ $(document).ready(function () {
       $("#opponentLogo").attr("src", "https://a.espncdn.com/i/teamlogos/ncaa/500/" + logoCode + ".png");
       $("#opponentScoreDisplay").html(currentOpponent + "<br>" + opponentScore);
 
-      if (isOvertime) {
-        $("#periodType").html("overtime");
+      if (sport == "Baseball" && period) {
+        if (inning == "top") {
+          $("#periodNumberPrefix").html("Top of the ")
+        } else if (inning == "bottom") {
+          $("#periodNumberPrefix").html("Bottom of the ")
+        } else {
+          $("#periodNumberPrefix").html("");
+        }
+      } else {
+        $("#periodNumberPrefix").html("");
+      }
+
+      if (isOvertime && isFinal) {
         periodOrdinal(period);
+        $("#periodNumber").prepend("Final in ");
+        $("#periodType").html("overtime");
+      } else if (isFinal) {
+        $("periodNumber").html("");
+        $("#periodType").html("Final");        
+      }
+      else if (isOvertime) {
+        periodOrdinal(period);
+        $("#periodType").html("overtime");
       } else {
         if (period) {
           periodOrdinal(period);
