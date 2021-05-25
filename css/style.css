@@ -65,6 +65,17 @@ body {
   margin: 0px;
 }
 
+.periodCheckboxes {
+  display: inline-block;
+  padding-right: 20px;
+}
+
+.inningRadios {
+  display: inline-block;
+  padding-right: 20px;
+  padding-bottom: 20px;
+}
+
 #playing {
   text-align: right;
   align-self: flex-end;

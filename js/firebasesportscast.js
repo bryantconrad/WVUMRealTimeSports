@@ -24,7 +24,7 @@ $(document).ready(function () {
 
 
   // Function to change score buttons based on sport
-  function changeInputSection(sportActive, isOvertime) {
+  function changeInputSection(sportActive, isOvertime, isFinal, inning) {
     if (sportActive == "Football") {
       $(".addHome, .addOpponent").hide();
       $(".jsFootball").show();
@@ -42,10 +42,34 @@ $(document).ready(function () {
       $(".jsButtonGrids").removeClass("buttonGrid1 buttonGrid2");
     }
 
+    if (sportActive == "Baseball") {
+      $(".inningRadios").show();
+      if (inning == "top") {
+        $("#inningTop").prop("checked", true);
+        console.log("top inning");
+      } else if (inning == "bottom") {
+        $("#inningBottom").prop("checked", true);
+        console.log("top inning bottom");
+      }
+    } else {
+      $(".inningRadios").hide();
+    }
+
+
     // Set period type
-    if (isOvertime == true) {
+    if (isFinal == true && isOvertime == true) {
+      $("#periodType").html("Final in Overtime");
+      $("#final").attr("checked", "checked");
+      $("#overtime").attr("checked", "checked");
+
+    } else if (isFinal == true) {
+      $("#final").attr("checked", "checked");
+      $("#periodType").html("Final")
+
+    } else if (isOvertime == true) {
       $("#overtime").attr("checked", "checked");
       $("#periodType").html("Overtime")
+
     } else {
       if (sportActive == "Football") {
         $("#periodType").html("Quarter");
@@ -108,10 +132,12 @@ $(document).ready(function () {
     var sportActive = snapshot.child("sport").val();
     var periodActive = snapshot.child("period").val();
     var isOvertime = snapshot.child("overtime").val();
+    var isFinal = snapshot.child("final").val();
+    var inning = snapshot.child("inning").val();
 
     if (isActive == true) {
       displayActiveInfo(isHome, currentOpponent, sportActive);
-      changeInputSection(sportActive, isOvertime);
+      changeInputSection(sportActive, isOvertime, isFinal, inning);
 
     } else {
       $("#activeGame").html("No active game");
@@ -208,6 +234,34 @@ $(document).ready(function () {
     }
   });
 
+  $("#final").change(function () {
+    if (this.checked) {
+      dbActive.update({
+        final: true
+      })
+    } else {
+      dbActive.update({
+        final: false
+      })
+    }
+  })
+
+  $("#inningTop").change(function () {
+    if (this.checked) {
+      dbActive.update({
+        inning: "top"
+      })
+    }
+  })
+
+  $("#inningBottom").change(function () {
+    if (this.checked) {
+      dbActive.update({
+        inning: "bottom"
+      })
+    }
+  })
+
 
   // Update active game scores with buttons
   $(".addHome").click(function () {
@@ -237,6 +291,7 @@ $(document).ready(function () {
     var opponentScoreActive = snapshot.child("opponentScore").val();
     var periodActive = snapshot.child("period").val();
     var isOvertime = snapshot.child("overtime").val();
+    var isFinal = snapshot.child("final").val();
 
     $("#umScoreInput").val(umScoreActive);
     $("#opponentScoreInput").val(opponentScoreActive);
@@ -253,9 +308,14 @@ $(document).ready(function () {
         opponentScore: opponentScoreActive
       })
 
+      // Show period/game update sections
       $("#periodSection, #scoreSection").show();
 
-      if (isOvertime == true) {
+      if (isFinal == true && isOvertime == true) {
+        $("#periodType").html("Final in Overtime");
+      } else if (isFinal == true) {
+        $("#periodType").html("Final");
+      } else if (isOvertime == true) {
         $("#periodType").html("Overtime");
       }
 
